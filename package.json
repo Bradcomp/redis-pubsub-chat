@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node start-server"
+  },
   "dependencies": {
     "express": "^4.14.0",
-    "ramda": "^0.22.1",
     "redis": "^2.6.3"
   }
 }

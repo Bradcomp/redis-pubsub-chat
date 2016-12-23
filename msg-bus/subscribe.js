@@ -5,14 +5,20 @@ const redis = require('redis');
 
 const subscribe = (channel) => (res) => {
   const sub = redis.createClient();
+
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive'
   });
-
+  res.on('close', () => {
+    sub.unsubscribe();
+    sub.quit();
+    res.end();
+  })
   sub.on('message', (channel, message) => {
     const {event, data} = JSON.parse(message);
+    
     res.write(`event: ${event.toString()}\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   });
@@ -22,6 +28,7 @@ const subscribe = (channel) => (res) => {
     unsubscribe() {
       sub.unsubscribe();
       sub.quit();
+      res.end();
     }
   };
 }
