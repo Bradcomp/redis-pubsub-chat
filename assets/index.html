@@ -4,14 +4,105 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Events</title>
+  <title>The Chort</title>
   <meta name="description" content="Thhhbbbbbbtt">
   <meta name="author" content="Bradcomp">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.2.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 
 <body>
-  <div id="app"></div>
+  <nav class="nav">
+    <div class="container">
+        <div class="nav-right nav-menu">
+            <a class="nav-item" href="https://github.com/Bradcomp/redis-pubsub-sse">
+                <span class="icon is-medium">
+                    <i class="fa fa-github"></i>
+                </span>
+            </a>
+        </div>
+        <span class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+    </div>
+  </nav>
+  <main>
+      <section class="hero is-dark is-bold">
+          <div class="hero-body">
+              <div class="container">
+                <div class="columns">
+                  <div class="column">
+                    <h1 class="title is-large">The Ch<span style="color:#777">(e)</span>at</h1>
+                    <h2 class="subtitle">Write words and things</h2>
+                  </div>
+                  <div class="column">
+                    <figure class="image is-128x128" style="float:right;">
+                      <img src="/images/the-cheat.png" alt="The Chort">
+                    </figure>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </section>
+      <section class="section">
+          <div class="container">
+            <div class="is-8 is-offset-2 box" style="min-height:350px;" id="chat">
+              <p><strong>CHATBOT 3000: </strong>WELCOME TO OUR CHATROOM.  DON'T RUIN IT FOR EVERYBODY!!</p>
+            </div>
+          </div>
+
+          <form>
+            <div class="container">
+
+                <div class="column is-one-third">
+                  <p class="control">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Nickname"
+                      id="nickname"
+                    >
+                  </p>
+                </div>
+                <div class="column">
+                  <p class="control">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Type here dummy"
+                      id="chat-text"
+                    >
+                  </p>
+                </div>
+
+            </div>
+          </form>
+      </div>
+  </main>
+  <footer class="footer">
+      <div class="container">
+          <div class="content has-text-centered">
+              <p>
+                  Styling courtesy of <a href="http://bulma.io">Bulma</a>.
+              </p>
+          </div>
+      </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
   <script src="js/event-client.js"></script>
   <script src="js/app.js"></script>
+  <script>
+        (function() {
+            var burger = document.querySelector('.nav-toggle');
+            var menu = document.querySelector('.nav-menu');
+
+            burger.addEventListener('click', function() {
+                burger.classList.toggle('is-active');
+                menu.classList.toggle('is-active');
+            });
+        })();
+    </script>
 </body>
 </html>

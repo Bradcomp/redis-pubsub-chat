@@ -6,10 +6,16 @@
       if (event === 'message')
         throw Error('message is not a valid event name');
 
-      src.addEventListener(event, e => {
+      const f = e => {
         var data = JSON.parse(e.data);
         handler(data);
-      }, {once});
+      }
+      src.addEventListener(event, f, {once});
+      return {
+        off() {
+          src.removeEventListener(event, f);
+        }
+      }
     };
 
     return {
