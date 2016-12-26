@@ -1,5 +1,5 @@
 (function() {
-  //globals: sseConnect, axios
+  //globals: sseConnect, axios, marked
   //helpers
   const compose = (f, g) => x => f(g(x))
   const getValue = (e) => e && e.target && e.target.value || '';
@@ -7,18 +7,25 @@
     emitter.addEventListener(event, handler);
     return () => emitter.removeEventListener(event, handler);
   };
-  const addText = (node, txt) => {
-    var text = document.createTextNode(txt);
-    node.appendChild(text);
-    return node;
-  }
 
   //Initial setup
   var messageBus = sseConnect('/stream');
   var model = {
     nickname: '',
-    chatText: ''
+    chatText: '',
+    chatbot: {
+      welcome: ['WELCOME TO OUR CHATROOM.  SHAME IF SOMEBODY ... HACKED IT.'],
+      todo: [
+        'PERSIST CHAT ACROSS SESSIONS (CLIENT OR SERVER)',
+        'ADD SUPPORT FOR MULTI-LINE COMMENTS',
+        'WHITELIST THE MARQUEE TAG'
+      ],
+      bugs: [
+        'SOME MARKDOWN ELEMENTS ARE BROKEN'
+      ]
+    }
   }
+
   //Our input and output elements
   const nickNode = document.getElementById('nickname');
   const chatNode = document.getElementById('chat-text');
@@ -45,11 +52,16 @@
   );
 
   const renderChatItem = ({nickname, chatText}) => {
-    var user = addText(document.createElement('strong'), `${nickname}: `);
-    var p = document.createElement('p');
-    p.appendChild(user);
-    p = addText(p, chatText);
-    convoNode.appendChild(p);
+    var chatText = marked(`__${nickname}: __ ${chatText}`, {sanitize: true});
+
+    var div = document.createElement('div');
+    div.innerHTML = chatText;
+
+    convoNode.appendChild(div);
+    convoNode.scrollTop = convoNode.scrollHeight;
   }
+  model.chatbot.welcome.forEach(chatText => {
+    renderChatItem({nickname: 'CHATBOT 3000', chatText});
+  });
   messageBus.on('chat', renderChatItem);
 })()

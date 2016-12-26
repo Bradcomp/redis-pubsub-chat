@@ -10,7 +10,7 @@ const msgBus = (opts) => {
 
   return {
     emit: emit(pub, channel),
-    subscribe: subscribe(channel)
+    subscribe: subscribe(opts, channel)
   }
 };
 
