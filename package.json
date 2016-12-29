@@ -4,11 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node start-server"
+    "start": "node start-server",
+    "build": "rollup -c"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "data.task": "^3.1.1",
     "express": "^4.14.0",
+    "marked": "^0.3.6",
     "redis": "^2.6.3"
+  },
+  "devDependencies": {
+    "rollup": "^0.38.1",
+    "rollup-plugin-commonjs": "^6.0.1",
+    "rollup-plugin-node-resolve": "^2.0.0"
   }
 }

@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const url = process.env.REDIS_URL || null;
 
-const msgBus = require('./msg-bus')({url});
+const msgBus = require('../msg-bus')({url});
 
 
 router.get('/', (req, res) => {
