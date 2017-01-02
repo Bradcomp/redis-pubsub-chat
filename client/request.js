@@ -1,10 +1,10 @@
 'use strict';
 
-import Task from 'data.task';
+import Future from 'fluture';
 
 function post(url, data) {
 
-  return new Task((reject, resolve) => {
+  return Future((reject, resolve) => {
     const xhr = new XMLHttpRequest();
 
     xhr.open('POST', url);

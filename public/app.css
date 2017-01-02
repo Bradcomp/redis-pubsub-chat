@@ -1,0 +1,5 @@
+.chat-box{
+  min-height:350px;
+  max-height:650px;
+  overflow:auto;
+}

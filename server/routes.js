@@ -2,26 +2,37 @@
 
 const express = require('express');
 const router = express.Router();
-const url = process.env.REDIS_URL || null;
 
+const url = process.env.REDIS_URL || null;
 const msgBus = require('../msg-bus')({url});
+
+const { find, insert } = require('./mongo');
+
+
+const saveChat = ({nickname, chatText}) =>
+  insert('messages', {nickname, chatText, date: new Date()});
 
 
 router.get('/', (req, res) => {
   res.sendFile(`${__dirname}/assets/index.html`);
 });
 
-router.get('/ping/:msg', (req, res) => {
-  msgBus.emit('ping', req.params.msg);
-  res.sendStatus(200);
+router.post('/chat', (req, res) => {
+  const {nickname, chatText} = req.body;
+  if (!nickname || !chatText) return res.sendStatus(400);
+
+  saveChat({nickname, chatText})
+    .fork(
+      () => res.sendStatus(500),
+      () => {
+        msgBus.emit('chat', {nickname, chatText});
+        res.sendStatus(200);
+      }
+    );
 });
 
-router.post('/chat', (req, res) => {
-  const msg = req.body;
-  if (!msg.nickname || !msg.chatText) return res.sendStatus(400);
+router.get('/load', (req, res) => {
 
-  msgBus.emit('chat', msg);
-  res.sendStatus(200);
 });
 
 router.get('/stream', (req, res) => {
