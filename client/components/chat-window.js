@@ -11,8 +11,8 @@ export function ChatWindow({chatStream = []}) {
       {
         chatStream
           .map(
-            ({nickname, chatText}) =>
-              <ChatItem nickname={nickname} chatText={chatText} />
+            ({nickname, chatText}, ndx) =>
+              <ChatItem nickname={nickname} chatText={chatText} key={ndx} />
           )
       }
     </div>

@@ -20110,10 +20110,10 @@ function ChatWindow(_ref) {
     react.createElement(
       'div',
       { className: 'is-8 is-offset-2 box chat-box' },
-      chatStream.map(function (_ref2) {
+      chatStream.map(function (_ref2, ndx) {
         var nickname = _ref2.nickname,
             chatText = _ref2.chatText;
-        return react.createElement(ChatItem, { nickname: nickname, chatText: chatText });
+        return react.createElement(ChatItem, { nickname: nickname, chatText: chatText, key: ndx });
       })
     )
   );
@@ -33490,29 +33490,53 @@ var ChatForm = function (_React$Component) {
   return ChatForm;
 }(react.Component);
 
-function App(_ref) {
-  var chatStream = _ref.chatStream;
+var App = function (_React$Component) {
+  inherits(App, _React$Component);
 
-  return react.createElement(
-    'div',
-    null,
-    react.createElement(ChatWindow, { chatStream: chatStream }),
-    react.createElement(ChatForm, null)
-  );
-}
+  function App(props) {
+    classCallCheck(this, App);
 
-//Initial setup
-var messageBus = sseConnect('/stream');
+    var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    var messageBus = sseConnect('/stream');
+    _this.state = {
+      chatStream: props.chatStream
+    };
+
+    messageBus.on('chat', _this.renderChatItem.bind(_this));
+    return _this;
+  }
+
+  createClass(App, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.renderChatItem({ nickname: 'CHATBOT 3000', chatText: 'WELCOME HUMAN' });
+    }
+  }, {
+    key: 'renderChatItem',
+    value: function renderChatItem(item) {
+      this.setState(function (previousState) {
+        return {
+          chatStream: previousState.chatStream.concat(item)
+        };
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return react.createElement(
+        'div',
+        null,
+        react.createElement(ChatWindow, { chatStream: this.state.chatStream }),
+        react.createElement(ChatForm, null)
+      );
+    }
+  }]);
+  return App;
+}(react.Component);
 
 var appNode = document.getElementById('app');
 var chatStream = [];
+var el = react.createElement(App, { chatStream: chatStream });
 
-var renderChatItem = function renderChatItem(chatMsg) {
-  chatStream = chatStream.concat(chatMsg);
-  var el = react.createElement(App, { chatStream: chatStream });
-  index$2.render(el, appNode);
-};
-
-renderChatItem({ nickname: 'CHATBOT 3000', chatText: 'WELCOME HUMAN' });
-
-messageBus.on('chat', renderChatItem);
+index$2.render(el, appNode);
